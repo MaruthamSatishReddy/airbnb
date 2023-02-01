@@ -11,13 +11,13 @@ const inter = Inter({ subsets: ['latin'] });
 export default function Home({ exploreData, cardsData }) {
   return (
     <>
-      <div>
+      <div className="h-screen scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#F7AB0A]/80">
         <Head>
           <title>Airbnb</title>
         </Head>
         <Header />
         <Banner />
-        <main className="max-w-7xl mx-auto px-8 sm:px-16 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#F7AB0A]/80">
+        <main className="max-w-7xl mx-auto px-8 sm:px-16">
           <section className="pt-6">
             <h2 className="text-4xl font-semibold pb-5">Explore Near by</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
