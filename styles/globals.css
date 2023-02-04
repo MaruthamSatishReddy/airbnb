@@ -5,4 +5,9 @@
   html {
     font-family: Trebuchet MS, Trebuchet MS, Trebuchet MS;
   }
+  @layer components {
+    .button {
+      @apply px-4 py-2 border rounded-full cursor-pointer hover:shadow-lg  active:scale-50 active:bg-gray-400 transition transform duration-100 ease-out;
+    }
+  }
 }

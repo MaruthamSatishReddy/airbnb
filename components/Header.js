@@ -6,15 +6,17 @@ import {
   GlobeAltIcon,
   MenuIcon,
   UserCircleIcon,
-  UserIcon,
+  UsersIcon,
 } from '@heroicons/react/outline';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-
-function Header() {
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { useRouter } from 'next/router';
+function Header({ placeHolder }) {
   const [searchInput, setSearchInput] = useState('');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [noOfGuests, setNoOfGuests] = useState(1);
+
   const handleSelect = (ranges) => {
     setStartDate(ranges.selection.startDate);
     setEndDate(ranges.selection.endDate);
@@ -25,9 +27,27 @@ function Header() {
     key: 'selection',
   };
 
+  const resetInput = () => {
+    setSearchInput('');
+  };
+  const router = useRouter();
+  const search = () => {
+    router.push({
+      pathname: '/search',
+      query: {
+        location: searchInput,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        noOfGuests,
+      },
+    });
+  };
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md py-5 px-5 md:px-10">
-      <div>
+      <div
+        onClick={() => router.push('/')}
+        className="relative flext items-center h-10 cursor-pointer my-auto"
+      >
         <Image
           src="https://links.papareact.com/qd3"
           alt="Logo"
@@ -40,7 +60,7 @@ function Header() {
           type="text"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
-          placeholder="Search Your Place"
+          placeholder={placeHolder || 'Search Your Place'}
           className="flex-grow pl-5 bg-transparent outline-none"
         />
         <SearchIcon className="hidden md:inline-flex h-8 bg-red-400 text-white rounded-full p-2 cursor-pointer" />
@@ -61,6 +81,27 @@ function Header() {
             rangeColors={['#FD5B61']}
             onChange={handleSelect}
           />
+          <div className="flex items-center border-b mb-4">
+            <h2 className="text-2xl flex-grow font-semibold">
+              Number of Guests
+            </h2>
+            <UsersIcon className="h-5" />
+            <input
+              value={noOfGuests}
+              onChange={(e) => setNoOfGuests(e.target.value)}
+              min={1}
+              type="number"
+              className="w-12 pl-2 outline-none text-red-400"
+            />
+          </div>
+          <div className="flex">
+            <button className="flex-grow text-gray-500" onClick={resetInput}>
+              Cancel
+            </button>
+            <button className="flex-grow text-red-400" onClick={search}>
+              Search
+            </button>
+          </div>
         </div>
       )}
     </header>
