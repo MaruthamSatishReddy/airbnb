@@ -2,8 +2,9 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
+import InfoCard from '../components/InfoCard';
 import { format } from 'date-fns';
-function Search() {
+function Search({ searchResult }) {
   const router = useRouter();
   const { location, startDate, endDate, noOfGuests } = router.query;
   const formatedStartDate = format(new Date(startDate), 'dd MMM yy');
@@ -11,7 +12,7 @@ function Search() {
   const range = `${formatedStartDate} - ${formatedEndDate}`;
 
   return (
-    <div>
+    <div className="h-screen scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#F7AB0A]/80">
       <Header placeHolder={`${location} | ${range} | ${noOfGuests} `} />
       <main className="flex">
         <section className="flex-grow pt-14 px-6">
@@ -25,6 +26,20 @@ function Search() {
             <p className="button">Price</p>
             <p className="button">More Filters</p>
           </div>
+          <div className="flex flex-col">
+            {searchResult.map((item) => (
+              <InfoCard
+                key={item.img}
+                img={item.img}
+                location={item.location}
+                title={item.title}
+                description={item.description}
+                star={item.star}
+                price={item.price}
+                total={item.total}
+              />
+            ))}
+          </div>
         </section>
       </main>
       <Footer />
@@ -33,3 +48,14 @@ function Search() {
 }
 
 export default Search;
+
+export async function getServerSideProps() {
+  const searchResult = await fetch('https://www.jsonkeeper.com/b/5NPS').then(
+    (response) => response.json()
+  );
+  return {
+    props: {
+      searchResult,
+    },
+  };
+}
