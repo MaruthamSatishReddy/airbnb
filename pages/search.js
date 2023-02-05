@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useRouter } from 'next/router';
 import InfoCard from '../components/InfoCard';
+import MapScreen from '../components/Map';
 import { format } from 'date-fns';
 function Search({ searchResult }) {
   const router = useRouter();
@@ -40,6 +41,9 @@ function Search({ searchResult }) {
               />
             ))}
           </div>
+        </section>
+        <section className="hidden xl:inline-flex">
+          <MapScreen />
         </section>
       </main>
       <Footer />
